@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Voice Agent</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 16px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #94a3b8;
+      margin-bottom: 40px;
+    }
+
+    /* ── Mic ring ───────────────────────────────────────────────────── */
+    .mic-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .mic-ring::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid #334155;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    /* Listening — blue pulse */
+    .mic-ring.listening::before {
+      border-color: #3b82f6;
+      animation: pulse-ring 1.4s ease-out infinite;
+    }
+
+    /* Processing — amber */
+    .mic-ring.processing::before {
+      border-color: #f59e0b;
+      animation: pulse-ring 0.9s ease-out infinite;
+    }
+
+    /* Speaking — green */
+    .mic-ring.speaking::before {
+      border-color: #22c55e;
+      animation: pulse-ring 0.7s ease-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%   { transform: scale(1);    opacity: 1; }
+      70%  { transform: scale(1.35); opacity: 0; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+
+    /* ── Mic button ─────────────────────────────────────────────────── */
+    .mic-btn {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: none;
+      background: #1e293b;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #64748b;
+      transition: background 0.3s, color 0.3s;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    .mic-ring.listening  .mic-btn { background: #1d4ed8; color: #fff; }
+    .mic-ring.processing .mic-btn { background: #b45309; color: #fff; }
+    .mic-ring.speaking   .mic-btn { background: #15803d; color: #fff; }
+
+    /* ── Status text ────────────────────────────────────────────────── */
+    .status {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 32px;
+      min-height: 1.4em;
+      transition: color 0.3s;
+    }
+    .status.listening  { color: #60a5fa; }
+    .status.processing { color: #fbbf24; }
+    .status.speaking   { color: #4ade80; }
+    .status.connecting { color: #94a3b8; }
+
+    /* ── Buttons ────────────────────────────────────────────────────── */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    button {
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    button:active { transform: scale(0.97); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #btn-connect    { background: #2563eb; color: #fff; }
+    #btn-disconnect { background: #dc2626; color: #fff; display: none; }
+
+    /* ── Transcript ─────────────────────────────────────────────────── */
+    #transcript {
+      width: 100%;
+      max-width: 560px;
+      max-height: 340px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 4px 0;
+    }
+
+    .msg {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-width: 85%;
+    }
+
+    .msg.user  { align-self: flex-end; align-items: flex-end; }
+    .msg.agent { align-self: flex-start; align-items: flex-start; }
+
+    .msg-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #475569;
+    }
+
+    .msg span:last-child {
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .msg.user  span:last-child { background: #1e3a5f; color: #bfdbfe; border-radius: 14px 14px 4px 14px; }
+    .msg.agent span:last-child { background: #1e2d1e; color: #bbf7d0; border-radius: 14px 14px 14px 4px; }
+
+    /* ── Scrollbar ──────────────────────────────────────────────────── */
+    #transcript::-webkit-scrollbar        { width: 4px; }
+    #transcript::-webkit-scrollbar-track  { background: transparent; }
+    #transcript::-webkit-scrollbar-thumb  { background: #334155; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <h1>AI Voice Agent</h1>
+
+  <div class="mic-ring idle" id="mic-ring">
+    <div class="mic-btn">🎤</div>
+  </div>
+
+  <div class="status idle" id="status">Click to connect</div>
+
+  <div class="btn-row">
+    <button id="btn-connect">Connect</button>
+    <button id="btn-disconnect">Disconnect</button>
+  </div>
+
+  <div id="transcript"></div>
+
+  <script src="voice.js"></script>
+</body>
+</html>

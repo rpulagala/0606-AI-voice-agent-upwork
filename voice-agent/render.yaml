@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: voice-agent-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false          # enter in Render dashboard
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_VOICE_ID
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: voice-agent-redis
+          property: connectionString
+
+  - type: redis
+    name: voice-agent-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []   # empty = allow all (Render internal network only for private services)

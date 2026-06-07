@@ -1,0 +1,104 @@
+Title: AI Voice Agent Development
+
+
+Summary : 
+AI/ML Engineer Needed to Build Voice AI Agent
+
+# Job Description
+
+We are looking for an experienced AI/ML Engineer or Voice AI Developer to help us build a voice-based AI agent that can communicate with users naturally, understand speech, respond intelligently, and potentially integrate with business systems such as CRM, booking tools, customer support platforms, or internal databases.
+
+The goal is to create a reliable AI voice agent that can handle real conversations, understand user intent, respond with low latency, and perform specific actions based on the conversation flow.
+
+# What We Need
+
+We need someone who can help with one or more of the following:
+
+* Build a real-time voice AI agent
+* Integrate speech-to-text and text-to-speech systems
+* Connect the voice agent with an LLM such as OpenAI, Claude, Gemini, or similar
+* Design conversation flows and intent handling
+* Add memory, context handling, and business logic
+* Integrate with APIs, CRM, calendar, databases, or third-party tools
+* Deploy the agent on web, mobile, phone call, or WhatsApp depending on the best approach
+* Optimize for low latency and natural conversation
+* Test, debug, and improve response quality
+
+# Required Experience
+
+The ideal candidate should have experience with:
+
+* AI/ML development
+* LLM integration
+* Voice AI agents or conversational AI
+* Speech-to-text and text-to-speech APIs
+* Python, Node.js, or relevant backend technologies
+* API integrations
+* Prompt engineering
+* Real-time audio streaming
+* Cloud deployment
+
+# Preferred Tools / Technologies
+
+Experience with any of the following is a strong plus:
+
+* OpenAI API / Realtime API
+* ElevenLabs
+* Deepgram
+* Whisper
+* Twilio Voice
+* Vapi
+* Retell AI
+* LiveKit
+* LangChain
+* LlamaIndex
+* Pinecone, Weaviate, Chroma, or other vector databases
+* FastAPI, Flask, Node.js, or Express
+* AWS, Google Cloud, Azure, or Docker
+
+# Project Scope
+
+We want to start with an MVP first. The MVP should include:
+
+1. A working voice AI agent
+2. Natural voice conversation
+3. Ability to understand user questions or requests
+4. AI-generated responses
+5. Basic workflow/action handling
+6. Integration with at least one required system or API
+7. Testing and documentation
+
+After the MVP, there may be ongoing work for improvements, new features, integrations, and scaling.
+
+# Deliverables
+
+* Fully working voice AI agent MVP
+* Source code and setup instructions
+* API integrations as required
+* Deployment support
+* Testing and bug fixes
+* Documentation explaining how the system works
+* Recommendations for future improvements
+
+# Ideal Candidate
+
+You should be someone who:
+
+* Has built AI agents or voice bots before
+* Can recommend the best tech stack
+* Understands latency, audio quality, and conversation design
+* Can work independently and communicate clearly
+* Can show previous AI/ML, chatbot, or voice AI projects
+* Can explain technical choices in simple terms
+
+# To Apply
+
+Please include:
+
+1. Examples of AI agents, chatbots, or voice AI systems you have built
+2. Your recommended tech stack for this project
+3. Estimated timeline for building the MVP
+4. Estimated budget or hourly rate
+5. Any questions you have about the project
+
+Please start your proposal with the word **VOICEAI** so we know you read the full job post.
